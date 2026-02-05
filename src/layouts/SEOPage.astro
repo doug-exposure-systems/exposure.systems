@@ -1,0 +1,41 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "Page",
+  description = "",
+  url = "",
+  image = "",
+  updated
+} = Astro.props;
+
+const jsonld = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: title,
+  description,
+  url,
+  dateModified: updated
+};
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {url && <link rel="canonical" href={url} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {image && <meta property="og:image" content={image} />}
+    {url && <meta property="og:url" content={url} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">{JSON.stringify(jsonld)}</script>
+  </head>
+  <body class="min-h-screen antialiased">
+    <slot />
+  </body>
+</html>
